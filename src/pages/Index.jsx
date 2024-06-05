@@ -1,4 +1,5 @@
-import { Box, Container, VStack, Text, Image, Heading, Flex, Link, HStack, Button } from "@chakra-ui/react";
+import { Box, Container, VStack, Text, Image, Heading, Flex, Link, HStack, Button, Input } from "@chakra-ui/react";
+import { useState } from "react";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 
 const sampleProducts = [
@@ -8,6 +9,15 @@ const sampleProducts = [
 ];
 
 const Index = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredProducts = sampleProducts.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <Container maxW="container.xl" p={0}>
       {/* Navigation Bar */}
@@ -28,11 +38,22 @@ const Index = () => {
         <Button colorScheme="teal" size="lg">Shop Now</Button>
       </Box>
 
+      {/* Search Bar */}
+      <Box py={10} textAlign="center">
+        <Input
+          placeholder="Search for products..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          size="lg"
+          width="50%"
+        />
+      </Box>
+
       {/* Products Section */}
       <Box py={10}>
         <Heading size="xl" textAlign="center" mb={10}>Featured Products</Heading>
         <Flex wrap="wrap" justifyContent="center" gap={6}>
-          {sampleProducts.map(product => (
+          {filteredProducts.map(product => (
             <Box key={product.id} borderWidth="1px" borderRadius="lg" overflow="hidden" maxW="sm">
               <Image src={product.image} alt={product.name} />
               <Box p={6}>
